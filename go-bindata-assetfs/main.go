@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 )
 
@@ -29,12 +30,21 @@ func isDebug(args []string) bool {
 }
 
 func main() {
-	if _, err := exec.LookPath("go-bindata"); err != nil {
+	command := "go-bindata"
+	_, err := exec.LookPath(command)
+	if err != nil {
+		gpath := os.Getenv("GOPATH")
+		if len(gpath) > 0 {
+			command = filepath.Join(gpath, command)
+			_, err = exec.LookPath(command)
+		}
+	}
+	if err != nil {
 		fmt.Println("Cannot find go-bindata executable in path")
-		fmt.Println("Maybe you need: go get github.com/elazarl/go-bindata-assetfs/...")
+		fmt.Println("Maybe you need: go get github.com/admpub/go-bindata-assetfs/...")
 		os.Exit(1)
 	}
-	cmd := exec.Command("go-bindata", os.Args[1:]...)
+	cmd := exec.Command(command, os.Args[1:]...)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
