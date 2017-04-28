@@ -76,7 +76,7 @@ func main() {
 			if debug {
 				fmt.Fprintln(out, "\t\"net/http\"")
 			} else {
-				fmt.Fprintln(out, "\t\"github.com/elazarl/go-bindata-assetfs\"")
+				fmt.Fprintln(out, "\t\"github.com/admpub/go-bindata-assetfs\"")
 			}
 			done = true
 		}
